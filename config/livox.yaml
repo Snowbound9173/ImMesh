@@ -22,6 +22,7 @@ common:
 preprocess:
     lidar_type: 1               # Livox Avia LiDAR
     scan_line: 6
+    timestamp_unit: 2
     blind: 1 # blind x m disable
 
 mapping:
@@ -32,6 +33,10 @@ mapping:
     b_acc_cov: 0.01
     b_gyr_cov: 0.01
     fov_degree:    180
+    # extrinsic_T: [ 0.0, 0.0, -0.0 ]
+    # extrinsic_R: [ 1, 0, 0,
+    #                0, 1, 0,
+    #                0, 0, 1]
     extrinsic_T: [ 0.04165, 0.02326, -0.0284 ]
     extrinsic_R: [ 1, 0, 0,
                    0, 1, 0,
@@ -49,25 +54,29 @@ voxel:
     max_layer: 2
     max_points_size: 100
     layer_init_size: [5,5,5,5,5]
-    
+        
 publish:
-    path_en:  false
+    path_en:  true
     scan_publish_en:  true       # false: close all the point cloud output
     dense_publish_en: false       # false: low down the points number in a global-frame point clouds scan.
     scan_bodyframe_pub_en: false  # true: output the point cloud scans in IMU-body-frame
     effect_point_pub: true
+
+pcd_save:
+    pcd_save_en: true
+    type: 0                      # 0 - World Frame, 1 - Body Frame;
+    interval: -1                  # how many LiDAR frames saved in each pcd file; 
+                                 # -1 : all frames will be saved in ONE pcd file, may lead to memory crash when having too much frames.
 
 image_save:
     img_save_en: false
     rot_dist: 0.0 # 0.05
     pos_dist: 0.0 # 0.15
     interval: 1
- 
+
 meshing:
-    distance_scale: 1.0                   # The global distance scale
-    points_minimum_scale: 1             # default = 0.1         # The minimum distance between any of two points
-    voxel_resolution: 0.4                 # The resolution of voxel
-    region_size: 10.0                     # Size of region
-    number_of_pts_append_to_map: 500000000 # Number of pts appending to map (per-frame)
+    points_minimum_scale: 0.1    #| default=0.1 | lowered to 0.01    # The minimum distance between any of two points | increased to 0.05 | back to 0.1
+    voxel_resolution: 0.4           # The resolution of voxel default = 0.4
+    region_size: 4.0               # Size of region default = 10.0
+    number_of_pts_append_to_map: 1000000 # | default = 10000 | increased to 100000  # Number of pts appending to map (per-frame) | Lowering to 20000 since 100 000 was prohibitive (at least with 0.01 minimum dist)
     if_draw_mesh: 1
-    enable_mesh_rec: 1

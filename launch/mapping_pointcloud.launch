@@ -1,6 +1,6 @@
 <launch>
 
-	<param name="pc_name" type="string" value="YOUR_POINTCLOUD.pcd" />
+	<param name="pc_name" type="string" value="/home/livox/ws_point-lio/src/Point-LIO/PCD/Point-LIO_2024-04-14_01.pcd" />
 	<rosparam command="load" file="$(find ImMesh)/config/offline_pointcloud.yaml" />
 	<param name="meshing/distance_scale" type="double" value="1.0" /> 
 	<param name="gui_font_size" type="int" value="20" /> 
